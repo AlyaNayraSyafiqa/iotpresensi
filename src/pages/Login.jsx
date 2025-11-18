@@ -1,26 +1,46 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import useAuthStore from '../stores/useAuthStore';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import loginSchema from '../schema/Login/schema';
+import { toast } from 'react-toastify';
+import InputField from '../components/InputField';
 
 export default function Login() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const navigate = useNavigate()
+	const { login, clearError } = useAuthStore();
 
-  const handleLogin = () => {
-    if (username.startsWith('admin')) navigate('/admin')
-    else if (username.startsWith('dosen')) navigate('/dosen')
-    else if (username.startsWith('mhs')) navigate('/mahasiswa')
-    else alert('Role tidak dikenali. Gunakan admin*, dosen*, atau mhs*')
-  }
+	const methods = useForm({
+		resolver: zodResolver(loginSchema),
+		mode: 'onChange',
+	});
 
-  return (
-    <div className="login-page">
-      <div className="login-box">
-        <h2>Login</h2>
-        <input className="input" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+	const onSubmit = async (data) => {
+		try {
+			const result = await login(data);
+
+			if (result?.success) {
+				toast.success('Berhasil masuk');
+				clearError();
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	};
+
+	return (
+		<div className="login-page">
+			<div className="login-box">
+				<h2>Login</h2>
+				<FormProvider {...methods}>
+					<form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4">
+						<InputField name="email" type="email" label="Email" placeholder="Masukkan email" />
+						<InputField name="password" type="password" label="Kata Sandi" placeholder="Masukkan kata sandi" />
+						<button className="btn">Login</button>
+					</form>
+				</FormProvider>
+				{/* <input className="input" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         <input className="input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button className="btn" onClick={handleLogin}>Login</button>
-      </div>
-    </div>
-  )
+        <button className="btn" onClick={handleLogin}>Login</button> */}
+			</div>
+		</div>
+	);
 }
