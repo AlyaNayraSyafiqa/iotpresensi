@@ -17,9 +17,36 @@ export default function Login() {
     <div className="login-page">
       <div className="login-box">
         <h2>Login</h2>
-        <input className="input" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <input className="input" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button className="btn" onClick={handleLogin}>Login</button>
+
+        <input
+          className="input"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+
+        <input
+          className="input"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button className="btn" onClick={handleLogin}>
+          Login
+        </button>
+
+        {/* Tambahan bagian untuk register */}
+        <p style={{ marginTop: '10px' }}>
+          Belum punya akun?{' '}
+          <span
+            style={{ color: 'blue', cursor: 'pointer' }}
+            onClick={() => navigate('/register')}
+          >
+            Register
+          </span>
+        </p>
       </div>
     </div>
   )
