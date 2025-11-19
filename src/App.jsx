@@ -1,4 +1,3 @@
-// App.jsx (Koreksi)
 
 import { Routes, Route } from "react-router-dom"
 import Login from "./pages/Login"
@@ -22,7 +21,6 @@ import RiwayatPresensi from './pages/mahasiswa/RiwayatPresensi'
 
 export default function App() {
   return (
-    // <BrowserRouter> dihapus karena sudah ada di main.jsx
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
